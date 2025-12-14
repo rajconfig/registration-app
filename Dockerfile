@@ -1,11 +1,13 @@
-FROM maven:3.9.6-eclipse-temurin-17
+# -------- Build stage --------
+FROM maven:3.9.6-eclipse-temurin-17 AS build
 WORKDIR /app
-COPY . .
-RUN maven clean package
-FROM eclipse-temurin:17-jdk
-WORKDIR /app
-COPY --from=build /app/target/*.jar /app/app.jar
-ENTRYPOINT 80
-CMD app.jar 
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean package -DskipTests
 
-
+# -------- Runtime stage --------
+FROM tomcat:9.0-jdk17-temurin
+RUN rm -rf /usr/local/tomcat/webapps/*
+COPY --from=build /app/target/*.war /usr/local/tomcat/webapps/
+EXPOSE 80
+ENTRYPOINT ["java","-jara","app.jar"]
