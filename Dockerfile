@@ -1,4 +1,11 @@
-FROM tomcat:latest
-RUN cp -R  /usr/local/tomcat/webapps.dist/*  /usr/local/tomcat/webapps
-COPY ./*.war /usr/local/tomcat/webapps
+FROM maven:latest
+WORKDIR /app
+COPY . .
+RUN maven clean package
+FROM openjdk:latest
+WORKDIR /app
+COPY --from=build /app/target/*.jar /app/app.jar
+ENTRYPOINT 80
+CMD app.jar 
+
 
