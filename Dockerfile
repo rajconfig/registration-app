@@ -5,11 +5,8 @@ COPY . .
 RUN mvn clean package -DskipTests
 
 # -------- Runtime stage --------
-FROM tomcat:9.0-jdk17-temurin
-
-RUN rm -rf /usr/local/tomcat/webapps/*
-
-COPY target/*.war /usr/local/tomcat/webapps/
-
+FROM eclipse-temurin:17-jdk
+WORKDIR /app
+COPY target/*.jar app.jar
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "javaapp.war"]
+CMD ["java", "-jar", "app.jar"]
