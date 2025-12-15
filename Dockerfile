@@ -17,5 +17,5 @@ RUN rm -rf /usr/local/tomcat/webapps/*
 # Deploy WAR
 COPY --from=build /app/webapp/target/*.war /usr/local/tomcat/webapps/ROOT.war
 
-EXPOSE 8080
+EXPOSE 80
 CMD ["catalina.sh", "run"]
