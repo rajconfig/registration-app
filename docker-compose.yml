@@ -3,14 +3,14 @@ services:
     build:
       context: .
       dockerfile: server/Dockerfile
-    ports:
-      - "8080:9091"
+    expose:
+      - "9090"   # internal only
 
   webapp:
     build:
       context: .
       dockerfile: webapp/Dockerfile
     ports:
-      - "80:9090"
+      - "80:8080"
     depends_on:
       - server
