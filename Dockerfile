@@ -5,8 +5,14 @@ COPY . .
 RUN mvn clean package -DskipTests
 
 # -------- Runtime stage --------
-FROM eclipse-temurin:17-jdk
+FROM tomcat:10.1-jdk17-temurin
 WORKDIR /app
-COPY target/*.jar app.jar
+# Remove default Tomcat apps
+RUN rm -rf /usr/local/tomcat/webapps/*
+
+# Copy WAR file to Tomcat
+COPY --from=build /app/target/*.war /usr/local/tomcat/webapps/ROOT.war
+
 EXPOSE 8080
-CMD ["java", "-jar", "app.jar"]
+
+CMD ["catalina.sh", "run"]
