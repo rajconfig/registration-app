@@ -6,7 +6,7 @@ WORKDIR /app
 COPY . .
 
 # Build only webapp, but include required modules
-RUN mvn clean package -pl webapp -am -DskipTests
+RUN mvn clean package -pl server -am -DskipTests
 
 # -------- Runtime stage --------
 FROM tomcat:10.1-jdk17-temurin
