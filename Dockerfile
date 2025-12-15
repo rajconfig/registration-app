@@ -18,4 +18,3 @@ RUN rm -rf /usr/local/tomcat/webapps/*
 COPY --from=build /app/webapp/target/*.war /usr/local/tomcat/webapps/ROOT.war
 
 EXPOSE 80
-CMD ["catalina.sh", "run"]
