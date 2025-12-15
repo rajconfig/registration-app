@@ -1,0 +1,28 @@
+version: '3.9'
+
+services:
+  server:
+    build:
+      context: .
+      dockerfile: server/Dockerfile
+    container_name: server
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+
+  webapp:
+    build:
+      context: .
+      dockerfile: webapp/Dockerfile
+    container_name: webapp
+    ports:
+      - "80:80"
+    depends_on:
+      - server
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
